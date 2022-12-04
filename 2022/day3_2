@@ -1,0 +1,1 @@
+awk 'BEGIN{p="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"}{r=$0;if (l>0){r="";for(i=1;i<=length(d);++i){j=match($0,substr(d,i,1));if(j>0){r=r substr(d,i,1)}}};d=r; l=l+1;l=l%3;if(l==0) {s+=match(p,substr(d,1,1))}}END{print s}' $1

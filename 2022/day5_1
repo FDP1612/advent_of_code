@@ -1,0 +1,1 @@
+awk '/ *\[[A-Z]\]/{for (i=1;i<=int((length($0)+1)/4);++i) {a[i]=a[i] substr($0,(i*4)-2,1);sub(" ","",a[i])}}/move/{for (i=1;i<=$2;i++){a[$6]=substr(a[$4],1,1) a[$6];a[$4]=substr(a[$4],2)}} END{for (i=1;i<=length(a);++i) r=r substr(a[i],1,1); print r}' $1

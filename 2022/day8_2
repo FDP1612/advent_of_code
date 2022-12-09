@@ -1,0 +1,1 @@
+awk '{for (i=1;i<=length($0);++i){x=i"-"NR;a[x]=substr($0,i,1)}END{for(i=1;i<=length($0);++i) {for(j=1;j<=NR;++j) print a[i"-"j]}}' $1

@@ -1,0 +1,1 @@
+awk '{h=-1; for (i=1;i<=length($0);++i){x=i"-"NR;a[x]=substr($0,i,1);r[x]=(a[x]>h);h=(a[x]>h)?a[x]:h};h=-1;for(i-=1;i>0;--i){x=i"-"NR;if (a[x]>h) r[x]=1;h=(a[x]>h)?a[x]:h}}END{for(i=1;i<=length($0);++i) {h=-1; for(j=1;j<=NR;++j){x=i"-"j;if (a[x]>h) r[x]=1;h=(a[x]>h)?a[x]:h};h=-1;for(j-=1;j>0;--j){x=i"-"j;if (a[x]>h) r[x]=1;h=(a[x]>h)?a[x]:h;s+=r[x]}}print s}' $1

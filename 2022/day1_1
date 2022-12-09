@@ -1,0 +1,1 @@
+awk '{s+=$1}/^$/{h=(s>h)?s:h;s=0}END{h=(s>h)?s:h;print h}' $1

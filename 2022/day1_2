@@ -1,0 +1,1 @@
+gawk 'BEGIN{split("0 0 0",h," ")}{s+=$1}/^$/{h[1]=(s>h[1])?s:h[1];asort(h);s=0}END{h[1]=(s>h[1])?s:h[1];print h[1]+h[2]+h[3]}' $1

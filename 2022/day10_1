@@ -1,0 +1,1 @@
+awk 'BEGIN{c=20;s[0]=1}{c+=($1=="noop")?1:2;s[int(c/40)]+=$2}END{for (i=0;i<6;++i) {t+=s[i]; r+= (20 + i * 40) * t}print r}' $1

@@ -1,0 +1,60 @@
+#!/usr/bin/gawk -f
+
+	# BEGIN regel(s)
+	BEGIN{
+		GGD=1
+	}
+
+    	/Monkey/{
+		MonkeyNr=$2
+		sub(":","",MonkeyNr)
+	}
+	/Starting items/{
+		MonkeyItems[MonkeyNr]=substr($0,19)
+	}
+	/Operation/{
+		MonkeyOper[MonkeyNr]=substr($0,24,1)
+		MonkeyOperV[MonkeyNr]=substr($0,26)
+	}
+	
+	/Test: divisible by/{
+		MonkeyDiv[MonkeyNr]=substr($0,22)
+		GGD*=MonkeyDiv[MonkeyNr]
+	}
+	/If true: throw to monkey/{
+		MonkeyTrue[MonkeyNr]=substr($0,30)
+	}
+ 	/If false: throw to monkey/{
+		MonkeyFalse[MonkeyNr]=substr($0,31)
+	}
+
+	# END regel(s)
+
+	END {
+		for (i=1;i<10001;i++) {
+			for (j in MonkeyItems) {
+				split(MonkeyItems[j],Mi,",")
+				for (k in Mi){
+					MonkeyC[j]++
+					Value=MonkeyOperV[j]
+					sub("old",Mi[k],Value)
+					Mi[k]+=(MonkeyOper[j]=="+")?Value:0
+					Mi[k]-=(MonkeyOper[j]=="-")?Value:0
+					Mi[k]*=(MonkeyOper[j]=="*")?Value:1
+					Mi[k]%=GGD
+					ToMonkey=(Mi[k]%MonkeyDiv[j])?MonkeyFalse[j]:MonkeyTrue[j]
+					if (match(MonkeyItems[ToMonkey],"[0-9]")) MonkeyItems[ToMonkey]=MonkeyItems[ToMonkey]","
+					MonkeyItems[ToMonkey]=MonkeyItems[ToMonkey]" "Mi[k]
+				}
+				MonkeyItems[j]=""
+			}
+		}
+		asort(MonkeyC)
+		for (j in MonkeyC){
+			ph=h
+			h=MonkeyC[j]
+		}
+		print h * ph 
+		
+	}
+

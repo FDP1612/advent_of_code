@@ -1,0 +1,28 @@
+#!/usr/bin/gawk -f
+
+	# BEGIN regel(s)
+	BEGIN{
+		l1len=0
+	}
+
+	/^\[/{
+		if (l1len==0) l1len=split($0,alijn1,",")
+		else l2len=split($0,alijn2,",")
+	}
+
+	/^ *$/{
+		print l1len" "l2len
+		l1Depth=1
+		for (i=0;i<l1len;++i){
+			laItem1=split(alijn1[i],aItem1,"[")
+			l1Depth+=(laItem1-1)
+			print l1Depth" "alijn1[i]
+		}
+		l1len=0
+	}
+	# END regel(s)
+
+	END {
+		print totaal
+	}
+

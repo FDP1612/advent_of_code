@@ -1,0 +1,8 @@
+#!/bin/bash
+
+
+YEAR=$(date +%Y)
+DAY=$(date +%-d)
+
+curl -b session=$(cat ${HOME}/.aocrc) https://adventofcode.com/${YEAR}/day/${DAY}/input > day${DAY}_1_input
+ln day${DAY}_1_input day${DAY}_2_input

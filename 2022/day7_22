@@ -1,0 +1,1 @@
+gawk --profile  '/\$ cd \//{d="/"}/\$ cd [a-z]+/{d=d $3 "/"}/\$ cd \.\./{sub("/[a-z]+/$","/",d)}/^[0-9]+/{r=d;while(r!="/"){a[r]+=$1;sub("/[a-z]+/$","/",r)};a[r]+=$1}END{s=30000000-(70000000-a["/"]);asort(a);for (i in a){if (a[i]>s) break};print a[i]}' $1

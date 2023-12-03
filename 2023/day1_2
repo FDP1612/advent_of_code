@@ -1,0 +1,4 @@
+#/bin/bash
+inputFile=$(basename $0)_${1:-input}
+sed -e 's/one/o1e/g' -e 's/two/t2/g' -e 's/three/3e/g' -e 's/four/4/g' -e 's/five/5e/g' -e 's/six/6/g' -e 's/seven/7n/g' -e 's/eight/e8/g' -e 's/nine/n9e/g' $inputFile > day1_1_input2
+./day1_1 input2

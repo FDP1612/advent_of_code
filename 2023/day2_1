@@ -1,0 +1,3 @@
+#/bin/bash
+inputFile=$(basename $0)_${1:-input}
+sed -e 's/^Game //' -e 's/:/*(/' -e 's/red/<= 12/g' -e 's/green/<= 13/g' -e 's/blue/<= 14/g' -e 's/[,;]/)*(/g'  -e 's/$/)/' $inputFile | bc | paste -sd+| bc

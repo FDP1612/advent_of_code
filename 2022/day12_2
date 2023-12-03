@@ -1,0 +1,48 @@
+#!/usr/bin/gawk -f
+
+	# BEGIN regel(s)
+	BEGIN{
+              ac = "SabcdefghijklmnopqrstuvwxyzE"
+              for (i = 2; i <= 28; ++i) {
+                      ind = substr(ac, i, 1)
+                      allowed[ind] = substr(ac,i-1)
+                }
+	}
+
+	{
+	for (i=1;i<=length($0);++i) {
+		a[NR"-"i]=substr($0,i,1)
+		if (a[NR"-"i]=="E") start=NR"-"i
+		else if (a[NR"-"i]=="S") eind=NR"-"i
+		}
+	}
+	# END regel(s)
+
+	END {
+		sol[start]=0
+		soln[start]=0
+		step=0
+		width=length($0)
+		while(sol[eind]==""){
+			++step
+			for (ind in soln){
+				split(ind,xy,"-")
+				allowedStr=allowed[a[xy[1]"-"xy[2]]]
+				check[1]=(xy[1] > 1)?xy[1]-1"-"xy[2]:""
+				check[2]=(xy[1] < NR)?xy[1]+1"-"xy[2]:""
+				check[3]=(xy[2] > 1)?xy[1]"-"xy[2]-1:""
+				check[4]=(xy[2] < width )?xy[1]"-"xy[2]+1:""
+				for (i in check){
+					if (( check[i] != "" ) && (sol[check[i]]=="") && index(allowedStr,a[check[i]])){
+						sol[check[i]]=step
+						soln[check[i]]=step
+						if (a[check[i]]=="a" && short=="") short=check[i]" "step
+					}
+				}
+				delete soln[i]
+				}
+			}
+		print step
+		print short
+	}
+

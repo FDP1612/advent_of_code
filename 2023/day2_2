@@ -1,0 +1,8 @@
+#/bin/bash
+inputFile=$(basename $0)_${1:-input}
+sed -e 's/:/", "colors" : [{/' -e 's/Game /"Game" : "/'  -e 's/$/;/' -e 's/^/{/' -e 's/\([0-9][0-9]*\) \([a-z][a-z]*\)\([,;]\)/"\2" : \1\3/g'   -e 's/;/},{/g' -e 's/,{$/]},/'  -e '1 s/^/{ "Games":[/' -e '$ s/,$/]}/' $inputFile | jq > $inputFile.json
+jq -r '.Games|.[].colors|max_by(.green)|.green' $inputFile.json > ${inputFile}_green
+jq -r '.Games|.[].colors|max_by(.blue)|.blue' $inputFile.json > ${inputFile}_blue
+jq -r '.Games|.[].colors|max_by(.red)|.red' $inputFile.json > ${inputFile}_red 
+paste -d* ${inputFile}_green ${inputFile}_blue ${inputFile}_red | bc | paste -sd+ | bc
+rm -f $inputFile.json ${inputFile}_green ${inputFile}_blue ${inputFile}_red

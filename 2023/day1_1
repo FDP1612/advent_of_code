@@ -3,3 +3,4 @@ inputFile=$(basename $0)_${1:-input}
 sed 's/^[^0-9]*//' $inputFile | cut -c1 > ${inputFile}_tmp1
 rev $inputFile | sed 's/^[^0-9]*//' | cut -c1 > ${inputFile}_tmp2
 paste -d"\0" ${inputFile}_tmp1 ${inputFile}_tmp2  | paste -sd+ | bc
+rm -f ${inputFile}_tmp?

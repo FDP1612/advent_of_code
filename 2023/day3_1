@@ -6,15 +6,18 @@ def checkType(aChar):
       return 0
     case ascChar if 48 <= ascChar <= 57:
       return 1
+    case 42:
+      return 3
     case _:
       return 2
 
-file1 = open('day3_1_input', 'r')
+file1 = open('day3_2_input', 'r')
 Lines = file1.readlines()
 LineNr = 0
 PartNr = ""
 CurNr = ""
-TotalPart=0
+Gears=[]
+GearResult={}
 for Line in Lines:
   LineNr += 1
   CharNr = 0
@@ -23,20 +26,29 @@ for Line in Lines:
   for char in Line:
     CharNr += 1
     match (checkType(char)):
-      case 0 | 2:
+      case 0 | 2 | 3:
         CurNr = ""
         if PartNr != "":
-          TotalPart += int (PartNr)
+          uGears = [list(x) for x in set(tuple(x) for x in Gears)]
+          for Gear in uGears:
+            if str(Gear) not in GearResult:
+              GearResult[str(Gear)]=[]
+            GearResult[str(Gear)].append(PartNr)
           PartNr = ""
+          Gears=[]
       case 1:
+        CurNr += char
+        startChar = CharNr -1 if CharNr > 1  else 1
+        endChar = CharNr + 1
+        for cLineNr in range (startLine - 1, endLine ):
+          for cCharNr in range (startChar - 1, endChar ):
+            if checkType (Lines[cLineNr][cCharNr]) == 3:
+              PartNr = CurNr
+              Gears.append([cLineNr,cCharNr])
         if PartNr != "":
-          PartNr += char
-        else:
-          CurNr += char
-          startChar = CharNr -1 if CharNr > 1  else 1
-          endChar = CharNr + 1
-          for cLineNr in range (startLine - 1, endLine ):
-            for cCharNr in range (startChar - 1, endChar ):
-              if checkType (Lines[cLineNr][cCharNr]) == 2:
-                PartNr = CurNr
-print (TotalPart)
+          PartNr = CurNr 
+TotalGeared=0
+for GearedParts in GearResult.values():
+  if len(GearedParts) == 2:
+    TotalGeared += int(GearedParts[0]) * int(GearedParts[1])
+print (TotalGeared)

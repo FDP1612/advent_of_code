@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+
+def checkType(aChar):
+  match (ord(aChar)):
+    case 46 | 10:
+      return 0
+    case ascChar if 48 <= ascChar <= 57:
+      return 1
+    case _:
+      return 2
+
+file1 = open('day3_1_input', 'r')
+Lines = file1.readlines()
+LineNr = 0
+PartNr = ""
+CurNr = ""
+TotalPart=0
+for Line in Lines:
+  LineNr += 1
+  CharNr = 0
+  startLine = LineNr -1 if LineNr > 1  else 1
+  endLine = LineNr + 1 if LineNr < len (Lines) else len (Lines)
+  for char in Line:
+    CharNr += 1
+    match (checkType(char)):
+      case 0 | 2:
+        CurNr = ""
+        if PartNr != "":
+          TotalPart += int (PartNr)
+          PartNr = ""
+      case 1:
+        if PartNr != "":
+          PartNr += char
+        else:
+          CurNr += char
+          startChar = CharNr -1 if CharNr > 1  else 1
+          endChar = CharNr + 1
+          for cLineNr in range (startLine - 1, endLine ):
+            for cCharNr in range (startChar - 1, endChar ):
+              if checkType (Lines[cLineNr][cCharNr]) == 2:
+                PartNr = CurNr
+print (TotalPart)

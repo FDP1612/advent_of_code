@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+import numpy
+
+def ConvertSeedRange(UnconvertedSeeds, ConvertedSeeds, DestNr, SourceNr, RangeNr):
+  return [UnconvertedSeeds, ConvertedSeeds]
+  if SourceNr <= SeedNr <= SourceNr + RangeNr -1:
+    return (SeedNr - SourceNr + DestNr, True)
+  else:
+    return (SeedNr, False)
+
+file1 = open('day5_1_test', 'r')
+Lines = file1.readlines()
+SeedConverter = {}
+curMap=""
+Results=[]
+for line in Lines:
+  splitLine=line.split()
+  if len(splitLine) > 0:
+    if splitLine[0] == "seeds:":
+      SeedsRanges = numpy.array(splitLine[1:], dtype=int)
+      first = True
+      CurValue = [[], []]
+      for SeedsRange in SeedsRanges:
+        if first:
+          NewPair=[SeedsRange, SeedsRange]
+        else:
+          NewPair[1] += SeedsRange -1
+          CurValue[1].append(NewPair)
+        first = not first
+    elif splitLine[-1] == "map:":
+      curMap = splitLine[0]
+      SeedConverter[curMap] = []
+    else:
+      SeedConverter[curMap].append(numpy.array(splitLine, dtype=int))
+for Maps in SeedConverter:
+  CurValue[0]=CurValue[1]
+  CurValue[1]=[]
+  print (CurValue)
+  for Map in SeedConverter[Maps]:
+    CurValue = ConvertSeedRange (CurValue[0], CurValue[1], Map[0], Map[1], Map[2])
+    if not CurValue[0]:
+      break
+  CurValue[1]=CurValue[1] + CurValue[0]
+  

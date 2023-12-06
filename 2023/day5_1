@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+import numpy
+
+def ConvertSeed(SeedNr, DestNr, SourceNr, RangeNr):
+  if SourceNr <= SeedNr <= SourceNr + RangeNr -1:
+    return (SeedNr - SourceNr + DestNr, True)
+  else:
+    return (SeedNr, False)
+
+file1 = open('day5_1_input', 'r')
+Lines = file1.readlines()
+SeedConverter = {}
+curMap=""
+Results=[]
+for line in Lines:
+  splitLine=line.split()
+  if len(splitLine) > 0:
+    if splitLine[0] == "seeds:":
+      Seeds = numpy.array(splitLine[1:], dtype=int)
+    elif splitLine[-1] == "map:":
+      curMap = splitLine[0]
+      SeedConverter[curMap] = []
+    else:
+      SeedConverter[curMap].append(numpy.array(splitLine, dtype=int))
+for Seed in Seeds:
+  CurValue = Seed
+  for Maps in SeedConverter:
+    for Map in SeedConverter[Maps]:
+      ConvertedValue  = ConvertSeed (CurValue, Map[0], Map[1], Map[2])
+      CurValue = ConvertedValue[0]
+      if ConvertedValue[1]:
+        break
+  Results.append(int(CurValue))
+print (min(Results))
+  

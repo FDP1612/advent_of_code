@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+import numpy
+
+file1 = open('day6_2_input', 'r')
+Lines = file1.readlines()
+for line in Lines:
+  splitLine=line.split()
+  if len(splitLine) > 0:
+    if splitLine[0] == "Time:":
+      Timings = numpy.array(splitLine[1:])
+    elif splitLine[0] == "Distance:":
+      Distances = numpy.array(splitLine[1:])
+WinChances=0
+oneTiming=""
+for splitTiming in Timings:
+  oneTiming += splitTiming
+oneDistance=""
+for splitDistance in Distances:
+  oneDistance += splitDistance
+oneTimeNum= int(oneTiming)
+oneDistNum= int(oneDistance)
+
+for ButtonTime in range(oneTimeNum):
+  TravelDistance = ButtonTime * (oneTimeNum - ButtonTime)
+  if TravelDistance > oneDistNum: 
+    WinChances += 1
+print (WinChances)

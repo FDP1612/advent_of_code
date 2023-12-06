@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+import numpy
+
+file1 = open('day6_1_input', 'r')
+Lines = file1.readlines()
+for line in Lines:
+  splitLine=line.split()
+  if len(splitLine) > 0:
+    if splitLine[0] == "Time:":
+      Timings = numpy.array(splitLine[1:], dtype=int)
+    elif splitLine[0] == "Distance:":
+      Distances = numpy.array(splitLine[1:], dtype=int)
+WinChances=[]
+raceNr=0
+
+for BoatTime in Timings:
+  WinChances.append(0)
+  for ButtonTime in range(BoatTime):
+    TravelDistance = ButtonTime * (BoatTime - ButtonTime)
+    if TravelDistance > Distances[raceNr]: 
+      WinChances[raceNr] += 1
+  raceNr +=1
+Winnings=1
+for Wins in WinChances:
+  Winnings *= Wins
+print (Winnings)

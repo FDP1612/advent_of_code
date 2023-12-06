@@ -2,13 +2,22 @@
 import numpy
 
 def ConvertSeedRange(UnconvertedSeeds, ConvertedSeeds, DestNr, SourceNr, RangeNr):
-  return [UnconvertedSeeds, ConvertedSeeds]
-  if SourceNr <= SeedNr <= SourceNr + RangeNr -1:
-    return (SeedNr - SourceNr + DestNr, True)
-  else:
-    return (SeedNr, False)
-
-file1 = open('day5_1_test', 'r')
+  resUnconvertedSeeds = []
+  resConvertedSeeds = ConvertedSeeds
+  for seedsToConvert in UnconvertedSeeds:
+    MaxStartRange = max (seedsToConvert[0], SourceNr)
+    MinDstRange = min (seedsToConvert[1], SourceNr + RangeNr -1)
+    if MinDstRange < MaxStartRange:
+      resUnconvertedSeeds.append (seedsToConvert)
+    else:
+      if seedsToConvert[0] < SourceNr:
+        resUnconvertedSeeds.append ([seedsToConvert[0], SourceNr -1])
+      if seedsToConvert[1] > SourceNr + RangeNr -1:
+        resUnconvertedSeeds.append ([SourceNr + RangeNr, seedsToConvert[1]]) 
+      resConvertedSeeds.append ([MaxStartRange - SourceNr + DestNr,  MinDstRange - SourceNr + DestNr])
+  return ([resUnconvertedSeeds, resConvertedSeeds])
+    
+file1 = open('day5_1_input', 'r')
 Lines = file1.readlines()
 SeedConverter = {}
 curMap=""
@@ -35,10 +44,10 @@ for line in Lines:
 for Maps in SeedConverter:
   CurValue[0]=CurValue[1]
   CurValue[1]=[]
-  print (CurValue)
   for Map in SeedConverter[Maps]:
     CurValue = ConvertSeedRange (CurValue[0], CurValue[1], Map[0], Map[1], Map[2])
     if not CurValue[0]:
       break
   CurValue[1]=CurValue[1] + CurValue[0]
-  
+FirstOnly = [item[0] for item in CurValue[1]]
+print (min(FirstOnly))

@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+
+file1 = open('day7_2_input', 'r')
+Lines = file1.readlines()
+WinResults=[]
+LineNr=0
+ValueResult=[]
+for Line in Lines:
+  splitLine = Line.split()
+  UsedChars=set(splitLine[0])
+  handValue=[]
+  Jokers=splitLine[0].count('J')
+  UsedChars.discard('J')
+  for eChar in UsedChars:
+    handValue.append(splitLine[0].count(eChar))
+  for i in range(len(handValue),5):
+    handValue.append(0)
+  handValue.sort(reverse=True)
+  handValue[0] += Jokers
+  handValueStr=''.join(str(x) for x in handValue)
+  WinResults.append(handValueStr + splitLine[0].replace('T',r'I').replace('K',r'R').replace('A',r'S').replace('J',r'1')+ "{0:0>9}".format(LineNr))
+  LineNr += 1
+  ValueResult.append(int(splitLine[1]))
+WinResults.sort()
+#print (WinResults)
+WinMul=1
+Winnings=0
+for WinResult in WinResults:
+  print (WinResult[:10])
+  Winnings += WinMul * ValueResult[int(WinResult[10:])]
+  WinMul += 1
+print (Winnings)
